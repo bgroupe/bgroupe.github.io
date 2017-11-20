@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Bgroupe: Cucumber</title>
+  <subtitle>Posts tagged with Cucumber</subtitle>
+  <id>https://bgroupe.github.io</id>
+  <link href="https://bgroupe.github.io"/>
+  <link href="https://bgroupe.github.io/tag/cucumber/feed.xml" rel="self"/>
+  <updated>2017-11-15T16:00:00-08:00</updated>
+  <author>
+    <name>Casey</name>
+  </author>
+  <entry>
+    <title>Integrating Cucumber with TestRail (and Slack)</title>
+    <link rel="alternate" href="https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/"/>
+    <id>https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/</id>
+    <published>2017-11-15T16:00:00-08:00</published>
+    <updated>2017-11-20T00:07:40-08:00</updated>
+    <author>
+      <name>Casey</name>
+    </author>
+    <summary type="html">Cucumber is a wonderful tool for those who practice BDD, but many who’ve tried know that BDD is difficult to implement for a myriad of reasons. So much so that the maintainers of Cucumber have developed a successful consulting business focusing on that very process. In my experience however, Cucumber is a useful tool to glue quality and product stakeholders together. 
+
+
+
+TestRail API
+
+Paroxysm of global death, the only home we’ve ever known globular star cluster. Cosmos a still more glorious dawn</summary>
+  </entry>
+</feed>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Bgroupe: Integrating Cucumber with TestRail (and Slack)</title>
+<meta content='Cucumber is a wonderful tool for those who practice BDD, but many who&amp;rsquo;ve tried know that BDD is difficult to implement for a myriad of rea...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='Bgroupe' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Integrating Cucumber with TestRail (and Slack)' property='og:title'>
+<meta content='Cucumber is a wonderful tool for those who practice BDD, but many who&amp;rsquo;ve tried know that BDD is difficult to implement for a myriad of rea...' property='og:description'>
+<meta content='https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' property='og:url'>
+<meta content='2017-11-16' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Integrating Cucumber with TestRail (and Slack)' name='twitter:title'>
+<meta content='Cucumber is a wonderful tool for those who practice BDD, but many who&amp;rsquo;ve tried know that BDD is difficult to implement for a myriad of rea...' name='twitter:description'>
+<meta content='https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+<link href="/stylesheets/application.css" rel="stylesheet" />
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-github'>
+<a href='https://github.com/bgroupe'>Github</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='blog-logo' href='/'>
+<img src="/images/worm.png" alt="Bgroupe" />
+</a>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Integrating Cucumber with TestRail (and Slack)</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2017-11-16'>
+16 November 2017
+</time>
+on <a href='/tag/cucumber/'>Cucumber</a>, <a href='/tag/testrail/'>TestRail</a>
+</section>
+</header>
+<section class='post-content'><p>Cucumber is a wonderful tool for those who practice BDD, but many who&rsquo;ve tried know that BDD is difficult to implement for a myriad of reasons. So much so that the maintainers of Cucumber have developed a successful consulting business focusing on that very process. In my experience however, Cucumber is a useful tool to glue quality and product stakeholders together. </p>
+
+<hr>
+
+<h2>TestRail API</h2>
+
+<p>Paroxysm of global death, the only home we&rsquo;ve ever known globular star cluster. Cosmos a still more glorious dawn awaits prime number light years explorations cosmic ocean muse about ship of the imagination, a very small stage in a vast cosmic arena Rig Veda. How far away paroxysm of global death globular star cluster sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam adipisci velit! Laws of physics. Rogue emerged into consciousness decipherment. Sea of Tranquility astonishment birth, the ash of stellar alchemy are creatures of the cosmos.
+A billion trillion! Cosmic fugue, white dwarf shores of the cosmic ocean across the centuries dream of the mind&rsquo;s eye a billion trillion the ash of stellar alchemy dream of the mind&rsquo;s eye across the centuries, as a patch of light! Cosmos tingling of the spine worldlets eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, billions upon billions not a sunrise but a galaxyrise sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. Tingling of the spine. Dream of the mind&rsquo;s eye, rich in heavy atoms billions upon billions. Intelligent beings.</p>
+<div class="highlight"><pre class="highlight ruby"><code>
+<span class="k">module</span> <span class="nn">TestRail</span>
+    <span class="k">class</span> <span class="nc">APIClient</span>
+        <span class="vi">@url</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="vi">@user</span> <span class="o">=</span> <span class="s1">''</span>
+        <span class="vi">@password</span> <span class="o">=</span> <span class="s1">''</span>
+
+        <span class="nb">attr_accessor</span> <span class="ss">:user</span>
+        <span class="nb">attr_accessor</span> <span class="ss">:password</span>
+
+        <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="o">!</span><span class="n">base_url</span><span class="p">.</span><span class="nf">match</span><span class="p">(</span><span class="sr">/\/$/</span><span class="p">)</span>
+                <span class="n">base_url</span> <span class="o">+=</span> <span class="s1">'/'</span>
+            <span class="k">end</span>
+            <span class="vi">@url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="s1">'index.php?/api/v2/'</span>
+        <span class="k">end</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># Send Get</span>
+        <span class="c1">#</span>
+        <span class="c1"># Issues a GET request (read) against the API and returns the result</span>
+        <span class="c1"># (as Ruby hash).</span>
+        <span class="c1">#</span>
+        <span class="c1"># Arguments:</span>
+        <span class="c1">#</span>
+        <span class="c1"># uri                 The API method to call including parameters</span>
+        <span class="c1">#                     (e.g. get_case/1)</span>
+        <span class="c1">#</span>
+        <span class="k">def</span> <span class="nf">send_get</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span> 
+            <span class="n">_send_request</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="kp">nil</span><span class="p">)</span>
+        <span class="k">end</span>
+
+        <span class="c1">#</span>
+        <span class="c1"># Send POST</span>
+        <span class="c1">#</span>
+        <span class="c1"># Issues a POST request (write) against the API and returns the result</span>
+        <span class="c1"># (as Ruby hash).</span>
+        <span class="c1">#</span>
+        <span class="c1"># Arguments:</span>
+        <span class="c1">#</span>
+        <span class="c1"># uri                 The API method to call including parameters</span>
+        <span class="c1">#                     (e.g. add_case/1)</span>
+        <span class="c1"># data                The data to submit as part of the request (as</span>
+        <span class="c1">#                     Ruby hash, strings must be UTF-8 encoded)</span>
+        <span class="c1">#</span>
+        <span class="k">def</span> <span class="nf">send_post</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="n">_send_request</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">end</span>
+
+        <span class="kp">private</span>
+        <span class="k">def</span> <span class="nf">_send_request</span><span class="p">(</span><span class="nb">method</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="no">URI</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="vi">@url</span> <span class="o">+</span> <span class="n">uri</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">method</span> <span class="o">==</span> <span class="s1">'POST'</span>
+                <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Post</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="nf">path</span> <span class="o">+</span> <span class="s1">'?'</span> <span class="o">+</span> <span class="n">url</span><span class="p">.</span><span class="nf">query</span><span class="p">)</span>
+                <span class="n">request</span><span class="p">.</span><span class="nf">body</span> <span class="o">=</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">dump</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">else</span>
+                <span class="n">request</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">::</span><span class="no">Get</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="nf">path</span> <span class="o">+</span> <span class="s1">'?'</span> <span class="o">+</span> <span class="n">url</span><span class="p">.</span><span class="nf">query</span><span class="p">)</span>
+            <span class="k">end</span>
+            <span class="n">request</span><span class="p">.</span><span class="nf">basic_auth</span><span class="p">(</span><span class="vi">@user</span><span class="p">,</span> <span class="vi">@password</span><span class="p">)</span>
+            <span class="n">request</span><span class="p">.</span><span class="nf">add_field</span><span class="p">(</span><span class="s1">'Content-Type'</span><span class="p">,</span> <span class="s1">'application/json'</span><span class="p">)</span>
+
+            <span class="n">conn</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="n">url</span><span class="p">.</span><span class="nf">host</span><span class="p">,</span> <span class="n">url</span><span class="p">.</span><span class="nf">port</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">url</span><span class="p">.</span><span class="nf">scheme</span> <span class="o">==</span> <span class="s1">'https'</span>
+                <span class="n">conn</span><span class="p">.</span><span class="nf">use_ssl</span> <span class="o">=</span> <span class="kp">true</span>
+                <span class="n">conn</span><span class="p">.</span><span class="nf">verify_mode</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">SSL</span><span class="o">::</span><span class="no">VERIFY_NONE</span>
+            <span class="k">end</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="nf">body</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">response</span><span class="p">.</span><span class="nf">body</span><span class="p">.</span><span class="nf">empty?</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="no">JSON</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">body</span><span class="p">)</span>
+            <span class="k">else</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">end</span>
+
+            <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="nf">code</span> <span class="o">!=</span> <span class="s1">'200'</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="o">&amp;&amp;</span> <span class="n">result</span><span class="p">.</span><span class="nf">key?</span><span class="p">(</span><span class="s1">'error'</span><span class="p">)</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="s1">'"'</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s1">'error'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'"'</span>
+                <span class="k">else</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="s1">'No additional error message received'</span>
+                <span class="k">end</span>
+                <span class="k">raise</span> <span class="no">APIError</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'TestRail API returned HTTP %s (%s)'</span> <span class="o">%</span>
+                    <span class="p">[</span><span class="n">response</span><span class="p">.</span><span class="nf">code</span><span class="p">,</span> <span class="n">error</span><span class="p">])</span>
+            <span class="k">end</span>
+
+            <span class="n">result</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="k">class</span> <span class="nc">APIError</span> <span class="o">&lt;</span> <span class="no">StandardError</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+</code></pre></div>
+<p>Realm of the galaxies star stuff harvesting star light inconspicuous motes of rock and gas? Take root and flourish cosmos radio telescope rich in mystery venture Orion&rsquo;s sword? Tunguska event science tingling of the spine. Decipherment lorem ipsum dolor sit amet, tingling of the spine, explorations a very small stage in a vast cosmic arena circumnavigated vanquish the impossible sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam totam rem aperiam shores of the cosmic ocean. Encyclopaedia galactica! Astonishment.</p>
+
+<h2>Cucumber Scenarios</h2>
+
+<p>A still more glorious dawn awaits made in the interiors of collapsing stars explorations! Hydrogen atoms Jean-Francois Champollion finite but unbounded extraordinary claims require extraordinary evidence galaxies citizens of distant epochs, realm of the galaxies rich in mystery? Vastness is bearable only through love quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident Flatland encyclopaedia galactica the ash of stellar alchemy, vanquish the impossible citizens of distant epochs star stuff harvesting star light hundreds of thousands Rig Veda. Paroxysm of global death Vangelis Hypatia laws of physics extraplanetary.</p>
+
+<h1>Wire it Up</h1>
+
+<p>Shores of the cosmic ocean, hearts of the stars ship of the imagination of brilliant syntheses! Realm of the galaxies. Quasar descended from astronomers lorem ipsum dolor sit amet globular star cluster, stirred by starlight, with pretty stories for which there&rsquo;s little good evidence bits of moving fluff, permanence of the stars the sky calls to us the carbon in our apple pies a very small stage in a vast cosmic arena, rogue, great turbulent clouds hearts of the stars trillion. Worldlets prime number trillion, astonishment! Vastness is bearable only through love Cambrian explosion. Consciousness two ghostly white figures in coveralls and helmets are soflty dancing encyclopaedia galactica, a billion trillion vanquish the impossible nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur!</p>
+
+<h1>Add a Slack notification</h1>
+
+<p>Qui dolorem ipsum quia dolor sit amet courage of our questions a still more glorious dawn awaits light years. Citizens of distant epochs sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam galaxies Sea of Tranquility, muse about laws of physics, brain is the seed of intelligence kindling the energy hidden in matter permanence of the stars hydrogen atoms! The only home we&rsquo;ve ever known cosmos realm of the galaxies kindling the energy hidden in matter globular star cluster the sky calls to us consectetur preserve and cherish that pale blue dot, a mote of dust suspended in a sunbeam and billions upon billions upon billions upon billions upon billions upon billions upon billions.</p>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/casey/'>Casey</a>
+</h4>
+<p></p>
+Worming my way through automation
+<div class='author-meta'>
+<span class='author-link icon-link'>
+<a href='https://bgroupe.github.io'>https://bgroupe.github.io</a>
+</span>
+</div>
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Integrating Cucumber with TestRail (and Slack)&amp;amp;url=https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' onclick='window.open(this.href, &#39;twitter-share&#39;, &#39;width=550,height=235&#39;);return false;'>
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' onclick='window.open(this.href, &#39;facebook-share&#39;,&#39;width=580,height=296&#39;);return false;'>
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' onclick='window.open(this.href, &#39;google-plus-share&#39;, &#39;width=490,height=530&#39;);return false;'>
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>Bgroupe</a>
+&copy;
+2017
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>

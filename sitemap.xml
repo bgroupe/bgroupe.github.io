@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/index.html</loc>
+    <lastmod>2017-11-20T00:07:40-08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://bgroupe.github.io/index.html</loc>
+    <lastmod>2017-11-20T00:25:40-08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://bgroupe.github.io/author/casey/index.html</loc>
+    <lastmod>2017-11-20T00:25:40-08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://bgroupe.github.io/tag/cucumber/index.html</loc>
+    <lastmod>2017-11-20T00:25:40-08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://bgroupe.github.io/tag/testrail/index.html</loc>
+    <lastmod>2017-11-20T00:25:40-08:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

@@ -7,23 +7,20 @@
   <link href="https://bgroupe.github.io/tag/testrail/feed.xml" rel="self"/>
   <updated>2017-11-15T16:00:00-08:00</updated>
   <author>
-    <name>bgroupe</name>
+    <name>Casey Guerrero</name>
   </author>
   <entry>
-    <title>Integrating Cucumber with TestRail (and Slack)</title>
+    <title>Integrating Cucumber with TestRail (and maybe Slack too)</title>
     <link rel="alternate" href="https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/"/>
     <id>https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/</id>
     <published>2017-11-15T16:00:00-08:00</published>
-    <updated>2017-11-20T08:03:17-08:00</updated>
+    <updated>2017-12-18T00:37:24-08:00</updated>
     <author>
-      <name>bgroupe</name>
+      <name>Casey Guerrero</name>
     </author>
-    <summary type="html">Cucumber is a wonderful tool for those who practice BDD, but many who’ve tried know that BDD is difficult to implement for a myriad of reasons. So much so that the maintainers of Cucumber have developed a successful consulting business focusing on that very process. In my experience however, Cucumber is a useful tool to glue quality and product stakeholders together. 
+    <summary type="html">Introduction
 
-
-
-TestRail API
-
-Paroxysm of global death, the only home we’ve ever known globular star cluster. Cosmos a still more glorious dawn</summary>
+This article will cover how to integrate your Cucumber test results with TestRail and Slack in a continuous integration workflow. The article will be split into 3 steps. 
+</summary>
   </entry>
 </feed>

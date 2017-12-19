@@ -2332,3 +2332,6 @@ body.page-template .post-title {
   word-wrap: normal; }
   pre.highlight code {
     white-space: pre; }
+
+.no-cover.main-header {
+  background: url("../images/bg.png") repeat center center; }

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Automatic Thinking: Integrating Cucumber with TestRail (and maybe Slack too)</title>
-<meta content='Introduction This article will cover how to integrate your Cucumber test results with TestRail and Slack in a continuous integration workflow. T...' name='description'>
+<title>Thinking Automatically: Integrating Cucumber with TestRail (pt. 1 of 5)</title>
+<meta content='Part 1: Introduction Despite Cucumber&amp;rsquo;s dogmatic imperative to propagate BDD practices to every last product stakeholder, many of its feat...' name='description'>
 <meta charset='utf-8'>
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <meta content='IE=edge' http-equiv='X-UA-Compatible'>
 <meta content='True' name='HandheldFriendly'>
-<meta content='Automatic Thinking' property='og:site_name'>
+<meta content='Thinking Automatically' property='og:site_name'>
 <meta content='article' property='og:type'>
-<meta content='Integrating Cucumber with TestRail (and maybe Slack too)' property='og:title'>
-<meta content='Introduction This article will cover how to integrate your Cucumber test results with TestRail and Slack in a continuous integration workflow. T...' property='og:description'>
+<meta content='Integrating Cucumber with TestRail (pt. 1 of 5)' property='og:title'>
+<meta content='Part 1: Introduction Despite Cucumber&amp;rsquo;s dogmatic imperative to propagate BDD practices to every last product stakeholder, many of its feat...' property='og:description'>
 <meta content='https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' property='og:url'>
 <meta content='2017-11-16' property='article:published_time'>
 <meta content='summary' name='twitter:card'>
-<meta content='Integrating Cucumber with TestRail (and maybe Slack too)' name='twitter:title'>
-<meta content='Introduction This article will cover how to integrate your Cucumber test results with TestRail and Slack in a continuous integration workflow. T...' name='twitter:description'>
+<meta content='Integrating Cucumber with TestRail (pt. 1 of 5)' name='twitter:title'>
+<meta content='Part 1: Introduction Despite Cucumber&amp;rsquo;s dogmatic imperative to propagate BDD practices to every last product stakeholder, many of its feat...' name='twitter:description'>
 <meta content='https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' name='twitter:url'>
 <link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
-<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href="../../../../images/favicon.ico" rel="icon" type="image/ico" />
 <link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
-<link href="/stylesheets/application.css" rel="stylesheet" />
+<link href="../../../../stylesheets/application.css" rel="stylesheet" />
 </head>
 <body class='post-template nav-closed'>
 <div class='nav'>
@@ -35,9 +35,6 @@
 <li class='nav-github'>
 <a href='https://github.com/bgroupe'>Github</a>
 </li>
-<li class='nav-bgroupe'>
-<a href='/author/bgroupe'>Bgroupe</a>
-</li>
 </ul>
 <a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
 </div>
@@ -46,15 +43,12 @@
 <div class='site-wrapper'>
 <header class='main-header no-cover post-head'>
 <nav class='main-nav clearfix'>
-<a class='menu-button icon-menu' href='#'>
-<span class='word'>Menu</span>
-</a>
 </nav>
 </header>
 <main class='content' role='main'>
 <article class='post'>
 <header class='post-header'>
-<h1 class='post-title'>Integrating Cucumber with TestRail (and maybe Slack too)</h1>
+<h1 class='post-title'>Integrating Cucumber with TestRail (pt. 1 of 5)</h1>
 <section class='post-meta'>
 <time class='post-date' datetime='2017-11-16'>
 16 November 2017
@@ -62,9 +56,17 @@
 on <a href='/tag/cucumber/'>Cucumber</a>, <a href='/tag/testrail/'>TestRail</a>
 </section>
 </header>
-<section class='post-content'><h2>Introduction</h2>
+<section class='post-content'><h2>Part 1: Introduction</h2>
 
-<p>This article will cover how to integrate your Cucumber test results with TestRail and Slack in a continuous integration workflow. The article will be split into 3 steps. </p>
+<p>Despite Cucumber&rsquo;s dogmatic imperative to propagate BDD practices to every last product stakeholder, many of its features provide lasting appeal for use as a general-purpose functional automation tool. You get executable acceptance criteria that everyone can read and write that provides visibility into the health of the product, and from a developer&rsquo;s perspective, many options to hook test execution into the SDLC. </p>
+
+<p>One way to get the most out of Cucumber is to combine it with <a href="https://www.gurock.com/testrail" rel="nofollow">TestRail.</a> TestRail is becoming the defacto test management tool on the market for many reasons, but the main reason IMO is its comprehensive <a href="http://docs.gurock.com/testrail-api2/start" rel="nofollow">REST API</a>. The API allows us to keep our feature files in TestRail while automatically creating and updating test runs as they execute. We can include information from the build system like git commits and authors, deployment tags, time to execute, etc., and then use TestRail&rsquo;s aggregated test statistics to do test impact analysis, identify flaky tests and more. </p>
+
+<p>Continuous Integration is a no-brainer here, but another interesting use case is automating the opening of a regression cycle. For example, if there is a large test plan for a release, Cucumber can open one or more test runs to complete the automated coverage as a canary before handing off the rest for any manual testing that is needed. The extra time time could be boxed out for additional exploratory testing. For this use case we also need a way to notify testers about the progress of the automated test execution. </p>
+
+<p>There are several use cases, so in the next four parts I will illustrate how to integrate your Cucumber features with TestRail, how to sync that integration to CI builds in Jenkins, and how to send test reports to the stakeholders in Slack. Read on: </p>
+
+<p><a href="#" rel="nofollow">Part 2</a> | <a href="#" rel="nofollow">Part 3</a> | <a href="#" rel="nofollow">Part 4</a> | <a href="#" rel="nofollow">Part 5</a></p>
 </section>
 <footer class='post-footer'>
 <section class='author'>
@@ -82,7 +84,7 @@ Automator
 </section>
 <section class='share'>
 <h4>Share this post</h4>
-<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Integrating Cucumber with TestRail (and maybe Slack too)&amp;amp;url=https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' onclick='window.open(this.href, &#39;twitter-share&#39;, &#39;width=550,height=235&#39;);return false;'>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Integrating Cucumber with TestRail (pt. 1 of 5)&amp;amp;url=https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' onclick='window.open(this.href, &#39;twitter-share&#39;, &#39;width=550,height=235&#39;);return false;'>
 <span class='hidden'>Twitter</span>
 </a>
 <a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/' onclick='window.open(this.href, &#39;facebook-share&#39;,&#39;width=580,height=296&#39;);return false;'>
@@ -100,16 +102,13 @@ Automator
 
 <footer class='site-footer clearfix'>
 <section class='copyright'>
-<a href='/'>Automatic Thinking</a>
+<a href='/'>Thinking Automatically</a>
 &copy;
 2017
 </section>
-<section class='poweredby'>
-Casper theme powered by
-<a href='https://ghost.org'>Ghost</a>
-</section>
+<section class='poweredby'></section>
 </footer>
 </div>
-<script src="/javascripts/application.js"></script>
+<script src="../../../../javascripts/application.js"></script>
 </body>
 </html>

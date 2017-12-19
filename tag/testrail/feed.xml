@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Automatic Thinking: TestRail</title>
+  <title>Thinking Automatically: TestRail</title>
   <subtitle>Posts tagged with TestRail</subtitle>
   <id>https://bgroupe.github.io</id>
   <link href="https://bgroupe.github.io"/>
@@ -10,17 +10,18 @@
     <name>Casey Guerrero</name>
   </author>
   <entry>
-    <title>Integrating Cucumber with TestRail (and maybe Slack too)</title>
+    <title>Integrating Cucumber with TestRail (pt. 1 of 5)</title>
     <link rel="alternate" href="https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/"/>
     <id>https://bgroupe.github.io/2017/11/16/syncing-cucumber-test-results-with-test-rail/</id>
     <published>2017-11-15T16:00:00-08:00</published>
-    <updated>2017-12-18T00:37:24-08:00</updated>
+    <updated>2017-12-19T00:41:50-08:00</updated>
     <author>
       <name>Casey Guerrero</name>
     </author>
-    <summary type="html">Introduction
+    <summary type="html">Part 1: Introduction
 
-This article will cover how to integrate your Cucumber test results with TestRail and Slack in a continuous integration workflow. The article will be split into 3 steps. 
-</summary>
+Despite Cucumber’s dogmatic imperative to propagate BDD practices to every last product stakeholder, many of its features provide lasting appeal for use as a general-purpose functional automation tool. You get executable acceptance criteria that everyone can read and write that provides visibility into the health of the product, and from a developer’s perspective, many options to hook test execution into the SDLC. 
+
+One way to get the most out of Cucumber is to combine it with</summary>
   </entry>
 </feed>
